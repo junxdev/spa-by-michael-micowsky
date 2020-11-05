@@ -1,0 +1,23 @@
+{
+  "name": "spa-by-michael-micowsky",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jslint": "./node_modules/.bin/jslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junxdev/spa-by-michael-micowsky.git"
+  },
+  "author": "junxdev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junxdev/spa-by-michael-micowsky/issues"
+  },
+  "homepage": "https://github.com/junxdev/spa-by-michael-micowsky#readme",
+  "dependencies": {
+    "jslint": "^0.12.1"
+  }
+}
