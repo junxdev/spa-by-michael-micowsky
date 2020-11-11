@@ -31,11 +31,16 @@ spa.shell = (function() {
             chat_extend_time: 1000,
             chat_retract_time: 300,
             chat_extend_height: 450,
-            chat_retract_height: 15
+            chat_retract_height: 15,
+            chat_extended_title: 'Click to retract',
+            chat_retracted_title: 'Click to extend'
         },
-        stateMap = {container: null}, // 모듈 사이에 공유하는 동적 정보 추가
+        stateMap = { // 모듈 사이에 공유하는 동적 정보 추가
+            container: null,
+            is_chat_retracted : true
+        },
         jqueryMap = {}, // jQuery 컬렉션 객체 캐싱
-        setJqueryMap, toggleChat, initModule; // 선언 먼저, 나중에 대입
+        setJqueryMap, toggleChat, onClickChat, initModule; // 선언 먼저, 나중에 대입
     //----------- 모듈 스코프 변수 끝------------
 
     //----------- 유틸리티 메서드 시작 ------------ 페이지 엘리먼트와 상호작용하지 않는 함수만 보관
@@ -51,6 +56,7 @@ spa.shell = (function() {
         };
     };
     // DOM 메서드 /setJqueryMap/ 끝
+
     // DOM 메서드 /toggleChat/ 시작
     // 목적: 채팅 슬라이더영역을 열고 닫는다.
     // 인자:
@@ -62,6 +68,9 @@ spa.shell = (function() {
     // 반환값: boolean
     //  * true - 슬라이더 애니메이션이 실행된다.
     //  * false - 슬라이더 애니메이션이 실행되지 않는다.
+    // 상태: stateMap.is_caht_retrated 값을 설정한다.
+    //  * true - 슬라이더 축소
+    //  * false - 슬라이더 확장
     toggleChat = function(do_extend, callback) {
         var
             px_chat_ht = jqueryMap.chat.offsetHeight,
@@ -77,6 +86,8 @@ spa.shell = (function() {
         if(do_extend) {
             jqueryMap.chat.style.transitionDuration = configMap.chat_extend_time + 'ms';
             jqueryMap.chat.style.height = configMap.chat_extend_height + 'px';
+            jqueryMap.chat.setAttribute('title', configMap.chat_extended_title);
+            stateMap.is_chat_retracted = false;
             if(callback) {callback(jqueryMap.chat);}
             return true;
         }
@@ -85,6 +96,8 @@ spa.shell = (function() {
         // 채팅 슬라이더 축소 시작
         jqueryMap.chat.style.transitionDuration = configMap.chat_retract_time + 'ms';
         jqueryMap.chat.style.height = configMap.chat_retract_height + 'px';
+        jqueryMap.chat.setAttribute('title', configMap.chat_retracted_title);
+        stateMap.is_chat_retracted = true;
         if(callback) {callback(jqueryMap.chat);}
         return true;
         // 채팅 슬라이더 축소 끝
@@ -93,6 +106,10 @@ spa.shell = (function() {
     //----------- DOM 메서드 끝 -------------
 
     //----------- 이벤트 핸들러 시작 ------------- jQuery 이벤트 핸들러 함수 영역
+    onClickChat = function(event) {
+        toggleChat(stateMap.is_chat_retracted);
+        return false;
+    };
     //----------- 이벤트 핸들러 끝 -------------
 
     //----------- public 메서드 시작 ------------- 외부로 노출하는 메서드 영역
@@ -103,9 +120,10 @@ spa.shell = (function() {
         container.innerHTML = configMap.main_html;
         setJqueryMap();
 
-        // 토글 테스트
-        setTimeout(function() {toggleChat(true);}, 3000);
-        setTimeout(function() {toggleChat(false);}, 8000);
+        // 채팅 슬라이더 초기화 및 클릭 핸들러 바인딩
+        stateMap.is_chat_retracted = true;
+        jqueryMap.chat.setAttribute('title', configMap.chat_retracted_title);
+        jqueryMap.chat.onclick = onClickChat;
     };
     // public 메서드/initModule/ 끝
     return {initModule: initModule}; // 공개 메서드를 맵에 넣어 반환
