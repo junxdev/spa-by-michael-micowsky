@@ -107,7 +107,9 @@ spa.shell = (function() {
 
     //----------- 이벤트 핸들러 시작 ------------- jQuery 이벤트 핸들러 함수 영역
     onClickChat = function(event) {
-        toggleChat(stateMap.is_chat_retracted);
+        if(toggleChat(stateMap.is_chat_retracted)) {
+            window.history.replaceState(undefined, undefined, '#chat=' + (stateMap.is_chat_retracted ? 'closed' : 'open'));
+        };
         return false;
     };
     //----------- 이벤트 핸들러 끝 -------------
