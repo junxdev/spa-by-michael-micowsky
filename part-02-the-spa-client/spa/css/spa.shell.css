@@ -92,6 +92,9 @@
     height: 15px;
     background: red;
     z-index: 1;
+    transition-property: height;
+    transition-duration: 350ms;
+    transition-timing-function: ease-in-out;
 }
 
 .spa-shell-modal {
