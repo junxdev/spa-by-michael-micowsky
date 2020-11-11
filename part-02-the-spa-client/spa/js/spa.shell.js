@@ -28,7 +28,7 @@ spa.shell = (function() {
             + '<div class="spa-shell-font"></div>'
             + '<div class="spa-shell-chat"></div>'
             + '<div class="spa-shell-modal"></div>'
-        }
+        },
         stateMap = {container: null}, // 모듈 사이에 공유하는 동적 정보 추가
         jqueryMap = {}, // jQuery 컬렉션 객체 캐싱
         setJqueryMap, initModule; // 선언 먼저, 나중에 대입
@@ -53,9 +53,9 @@ spa.shell = (function() {
     // public 메서드/initModule/ 시작
     initModule = function(container) { // 모듈을 초기화하는 메서드
         stateMap.container = container;
-        container.innerHTML(configMap.main_html);
+        container.innerHTML = configMap.main_html;
         setJqueryMap();
-    }
+    };
     // public 메서드/initModule/ 끝
     return {initModule: initModule}; // 공개 메서드를 맵에 넣어 반환
     //----------- public 메서드 끝 -------------
